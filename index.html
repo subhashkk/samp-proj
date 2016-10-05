@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<link>
+<title>Chat Application | Voya Financial</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<!-- @if BUILD_TYPE='dist' !>
+      <link rel="stylesheet" href="static/public/css/app.css">
+<!-- @endif -->
+
+<!-- @if BUILD_TYPE!='dist' -->
+<!-- @endif -->
+
+
+<link rel="stylesheet" href="src/app.css">
+<link rel="stylesheet" href="static/public/css/widgets.min.css">
+<link rel="stylesheet" href="static/public/css/style.css">
+
+
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<meta name="MobileOptimized" content="320">
+<meta name="HandheldFriendly" content="true">
+
+
+</head>
+<body>
+
+<div aurelia-app="src/main"><!--app container-->
+    <voya-indicator
+            fixed
+            active
+            type="spinner">
+    </voya-indicator>
+</div>
+
+<script src="static/public/js/vendor/polyfills.js"></script>
+<script src="static/config/endpoint.js"></script>
+
+
+
+<script>
+
+ window.pwebContext = {
+
+ // FOR HTML only - This portion is commented during building jsp so do not change
+ //Comment this for JSP and pass the value as query param
+
+        AuthenticationLevel: qs('aj_ing_secur_test'),
+        SsoSessionID : qs('sso-session-id'),
+        SSN: qs('aw_ing_client_id'),
+        ClientID: qs('aw_ing_client_code'),
+        vruApp: qs('ing_vru_app'),
+        DNIS: qs('dnis'),
+        CUST_ID: qs('ing_policy_acct1'),
+        LANGUAGE: qs('language'),
+        LOB: qs('lob')
+
+ // FOR HTML End - - This portion is commented during building jsp so do not change
+
+ /* // FOR JSP Only - This comment is replaced during building jsp so do not change
+ //Comment this for HTML
+
+        AuthenticationLevel: checkNull('<%=request.getAttribute("aj_ing_secur_test")%>'),
+        SsoSessionID : checkNull('<%=request.getAttribute("sso-session-id")%>'),
+        SSN: checkNull('<%=request.getAttribute("aw_ing_client_id")%>'),
+        ClientID: checkNull('<%=request.getAttribute("aw_ing_client_code")%>'),
+        vruApp: checkNull('<%=request.getAttribute("ing_vru_app")%>'),
+        DNIS: checkNull('<%=request.getAttribute("dnis")%>'),//qs('dnis'),
+        CUST_ID: checkNull('<%=request.getAttribute("ing_policy_acct1")%>'),
+        LANGUAGE: checkNull('<%=request.getAttribute("language")%>'),
+        LOB: checkNull('<%=request.getAttribute("lob")%>')
+
+ */ // FOR JSP End - This comment is replaced during building jsp so do not change
+
+
+ };
+
+ window.pwebFormData = {
+
+ // FOR HTML only
+ //Comment this for JSP and pass the value as query param
+        first_name: qs('ing_first_name'),
+        last_name: qs('ing_last_name'),
+        email : qs('ing_email_address')
+ // FOR HTML End
+
+ /* // FOR JSP Only
+ //Comment this for HTML
+        first_name: checkNull('<%=request.getAttribute("ing_first_name")%>'),
+        last_name: checkNull('<%=request.getAttribute("ing_last_name")%>'),
+        email : checkNull('<%=request.getAttribute("ing_email_address")%>')
+ */ // FOR JSP End
+
+ };
+
+
+  function qs(search_for) {
+    var query = window.location.search.substring(1);
+    var parms = query.split('&');
+    for (var i=0; i<parms.length; i++) {
+      var pos = parms[i].indexOf('=');
+      if (pos > 0  && search_for == parms[i].substring(0,pos)) {
+        return parms[i].substring(pos+1);;
+      }
+    }
+    return "";
+  }
+
+  function checkNull(param) {
+
+      console.log('**************************** Param :'+param);
+      if(param == null || param == "null" )
+          return '';
+      else
+          return param;
+  }
+
+
+</script>
+
+<noscript>This application requires that javascript be enabled.</noscript>
+
+<script id="genesys-cx-widget" type="text/javascript" src="static/public/js/vendor/widgets.min.js"> </script>
+
+<script>
+    if(!window._genesys)window._genesys = {};
+    if(!window._gt)window._gt = [];
+
+    window._genesys.cxwidget = {
+        main: {
+            debug: true,
+            theme: "light",
+            lang: "en",
+            customStylesheetID: "genesys_cx_widget_custom",
+            plugins: [
+                "cx-webchat",
+                "cx-webchat-service"
+            ]
+        },
+        onReady: function(bus){ window._genesys.cxwidget.bus = bus;},
+        webchat: {
+            //dataURL: window.chatEndPoint.genesysChatServiceAPI ,
+            dataURL:checkNull('<%=request.getAttribute("genesys_chat_endpoint")%>'),
+            ajaxTimeout:  10000
+        }
+    };
+</script>
+
+<!-- @if BUILD_TYPE='dist' !>
+         <script src='static/public/js/system-csp-production.js'></script>
+         <script src='static/public/js/config.js'></script>
+         <script src='static/public/js/bundles-config.js'></script>
+         <script src='static/public/js/bundles/lib.js' charset='UTF-8'></script>
+         <script src='static/public/js/bundles/app.js' charset='UTF-8'></script>
+  <!-- @endif -->
+
+<!-- @if BUILD_TYPE!='dist' -->
+<script>
+    window.DEV_MODE = true;
+</script>
+<script src='/jspm_packages/system.js'></script>
+<script src='/config.js'></script>
+<script src='static/public/js/bundles-config.js'></script>
+<script src='static/public/js/bundles/lib.js'></script>
+<!-- @endif -->
+
+
+
+
+
+<script>
+    System.import('aurelia-bootstrapper');
+</script>
+
+
+
+</body>
+</html>
